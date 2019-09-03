@@ -34,6 +34,7 @@ function addTaskToDOM(text) {
   let task = document.createElement('li');
   task.textContent = text;
 
+  // ボタンを格納するdiv要素を生成
   let buttons = document.createElement('div');
   buttons.classList.add('buttons');
 
@@ -41,6 +42,9 @@ function addTaskToDOM(text) {
   let remove = document.createElement('button');
   remove.classList.add('remove');
   remove.innerHTML = removeIcon;
+
+  //削除ボタンをクリックした時の動作を追加
+  remove.addEventListener('click', removeTask);
 
   //完了ボタンを作成
   let done = document.createElement('button');
@@ -54,6 +58,20 @@ function addTaskToDOM(text) {
 
   //組み立てたDOMをインサート
   list.insertBefore(task, list.childNodes[0]);
+}
+
+//削除ボタンを押したとき
+function removeTask() {
+  let task = this.parentNode.parentNode;
+  let value = task.textContent;
+
+  //画面から削除
+  task.remove();
+
+  //ストレージから削除
+  data.task.splice(data.task.indexOf(value), 1);
+  dataObjectUpdated();
+
 }
 
 // localストレージに登録
