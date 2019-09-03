@@ -96,6 +96,27 @@ function removeTask() {
   dataObjectUpdated();
 }
 
+//完了ボタンを押したとき
+function doneTask() {
+  let task = this.parentNode.parentNode;
+  let id = task.parentNode.id;
+  if (id !== 'not-yet') {
+    return;
+  }
+
+  let value = task.textContent;
+
+  //完了一覧に追加
+  let target = document.getElementById('done');
+  target.insertBefore(task, target.childNodes[0]);
+
+  //ストレージも更新
+  data.task.splice(data.task.indexOf(value), 1);
+  data.done.push(value);
+  dataObjectUpdated();
+}
+
+
 // ローカルストレージに登録
 function dataObjectUpdated() {
   localStorage.setItem('todoList', JSON.stringify(data));
