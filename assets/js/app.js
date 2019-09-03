@@ -29,8 +29,14 @@ function addTask(value) {
 }
 
 // DOMの生成
-function addTaskToDOM(text) {
-  let list = document.getElementById('not-yet');
+function addTaskToDOM(text, isDone) {
+  let list;
+  if (isDone) {
+    list = document.getElementById('done');
+  } else {
+    list = document.getElementById('not-yet');
+  }
+
   let task = document.createElement('li');
   task.textContent = text;
 
@@ -63,15 +69,21 @@ function addTaskToDOM(text) {
 //削除ボタンを押したとき
 function removeTask() {
   let task = this.parentNode.parentNode;
-  let value = task.textContent;
-
+  let id = task.parentNode.id;
   //画面から削除
   task.remove();
 
-  //ストレージから削除
-  data.task.splice(data.task.indexOf(value), 1);
-  dataObjectUpdated();
+  // HTML以外のテキストのみ取得できる
+  let value = task.textContent;
 
+  //ストレージから削除
+  //ストレージから削除
+  if (id === 'not-yet') {
+    data.task.splice(data.task.indexOf(value), 1);
+  } else {
+    data.done.splice(data.done.indexOf(value), 1);
+  }
+  dataObjectUpdated();
 }
 
 // localストレージに登録
@@ -83,5 +95,9 @@ function dataObjectUpdated() {
 function renderTodoList() {
   for (let value of data.task) {
     addTaskToDOM(value);
+  }
+
+  for (let value of data.done) {
+    addTaskToDOM(value, true);
   }
 }
