@@ -61,6 +61,9 @@ function addTaskToDOM(text, isDone) {
   done.classList.add('done');
   done.innerHTML = doneIcon;
 
+  //完了ボタンをクリックした時の動作を追加
+  done.addEventListener('click', doneTask);
+
   //DOMの組み立て
   buttons.appendChild(remove);
   buttons.appendChild(done);
