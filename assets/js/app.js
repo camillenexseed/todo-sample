@@ -3,7 +3,7 @@ let data;
 //もしデータが保存されていれば
 if (localStorage.getItem('todoList')) {
   data = JSON.parse(localStorage.getItem('todoList')); //データを取り出す
-
+  renderTodoList();
   //もしデータが保存されていなければ
 } else {
   // データの保存先を作成
@@ -23,9 +23,11 @@ function addTask(value) {
   dataObjectUpdated();
   console.log(localStorage.getItem('todoList'));
 
-  addTaskToDOM(value)
+  // DOMの生成
+  addTaskToDOM(value);
 }
 
+// DOMの生成
 function addTaskToDOM(text) {
   let list = document.getElementById('not-yet');
   let task = document.createElement('li');
@@ -34,6 +36,14 @@ function addTaskToDOM(text) {
   list.insertBefore(task, list.childNodes[0]);
 }
 
+// localストレージに登録
 function dataObjectUpdated() {
   localStorage.setItem('todoList', JSON.stringify(data));
+}
+
+// 一覧出力するための関数
+function renderTodoList() {
+  for (let value of data.task) {
+    addTaskToDOM(value);
+  }
 }
