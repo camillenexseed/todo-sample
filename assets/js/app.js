@@ -1,4 +1,5 @@
 let data;
+// localStorage.removeItem('todoList')
 //チェックマークとゴミ箱マークのアイコン
 let removeIcon = '<i class="far fa-trash-alt fa-lg"></i>';
 let doneIcon = '<i class="far fa-check-circle fa-lg"></i>';
@@ -22,10 +23,12 @@ document.getElementById('add').addEventListener('click', function () {
 });
 
 function addTask(value) {
+  // データの保存
   data.task.push(value);
-
   // DOMの生成
   addTaskToDOM(value);
+  // 保存
+  dataObjectUpdated();
 }
 
 // DOMの生成
@@ -37,6 +40,7 @@ function addTaskToDOM(text, isDone) {
     list = document.getElementById('not-yet');
   }
 
+  // テキストを格納するli要素を生成
   let task = document.createElement('li');
   task.textContent = text;
 
@@ -68,7 +72,9 @@ function addTaskToDOM(text, isDone) {
 
 //削除ボタンを押したとき
 function removeTask() {
+  // ボタンの親要素の親要素を取得（一覧を格納しているul要素）
   let task = this.parentNode.parentNode;
+  // ul要素のid
   let id = task.parentNode.id;
   //画面から削除
   task.remove();
@@ -77,16 +83,20 @@ function removeTask() {
   let value = task.textContent;
 
   //ストレージから削除
-  //ストレージから削除
   if (id === 'not-yet') {
+    // data.task == data['task']
+    // array.indexOf(value)で配列からn番目の要素か探すことができる
     data.task.splice(data.task.indexOf(value), 1);
   } else {
+    // data.task == data['done']
+    // array.indexOf(value)で配列からn番目の要素か探すことができる
     data.done.splice(data.done.indexOf(value), 1);
   }
+  // ローカルストレージに保存
   dataObjectUpdated();
 }
 
-// localストレージに登録
+// ローカルストレージに登録
 function dataObjectUpdated() {
   localStorage.setItem('todoList', JSON.stringify(data));
 }
