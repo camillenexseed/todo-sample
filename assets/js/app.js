@@ -1,4 +1,7 @@
 let data;
+//チェックマークとゴミ箱マークのアイコン
+let removeIcon = '<i class="far fa-trash-alt fa-lg"></i>';
+let doneIcon = '<i class="far fa-check-circle fa-lg"></i>';
 
 //もしデータが保存されていれば
 if (localStorage.getItem('todoList')) {
@@ -20,8 +23,6 @@ document.getElementById('add').addEventListener('click', function () {
 
 function addTask(value) {
   data.task.push(value);
-  dataObjectUpdated();
-  console.log(localStorage.getItem('todoList'));
 
   // DOMの生成
   addTaskToDOM(value);
@@ -32,6 +33,25 @@ function addTaskToDOM(text) {
   let list = document.getElementById('not-yet');
   let task = document.createElement('li');
   task.textContent = text;
+
+  let buttons = document.createElement('div');
+  buttons.classList.add('buttons');
+
+  //削除ボタンを作成
+  let remove = document.createElement('button');
+  remove.classList.add('remove');
+  remove.innerHTML = removeIcon;
+
+  //完了ボタンを作成
+  let done = document.createElement('button');
+  done.classList.add('done');
+  done.innerHTML = doneIcon;
+
+  //DOMの組み立て
+  buttons.appendChild(remove);
+  buttons.appendChild(done);
+  task.appendChild(buttons);
+
   //組み立てたDOMをインサート
   list.insertBefore(task, list.childNodes[0]);
 }
